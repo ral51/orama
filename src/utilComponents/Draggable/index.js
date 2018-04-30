@@ -1,7 +1,7 @@
 // Copyright 2017 Kensho Technologies, LLC.
 
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
 /*
 The <Draggable/> component makes its child 'draggable' by ovveriden its mouseDown, it does not wrap the child in another <div/> or <span/>.
@@ -27,69 +27,64 @@ const slider = props => (
 export class Draggable extends React.Component {
   static propTypes = {
     children: PropTypes.element,
-    onUpdate: PropTypes.func.isRequired,
-  }
+    onUpdate: PropTypes.func.isRequired
+  };
   updateOnlyTypes = {
     deltaX: PropTypes.number,
-    deltaY: PropTypes.number,
-  }
-  canUpdate = [
-    'deltaX', 'deltaY',
-  ]
+    deltaY: PropTypes.number
+  };
+  canUpdate = ["deltaX", "deltaY"];
   static defaultProps = {
-    initialPos: {x: 0, y: 0},
-  }
+    initialPos: { x: 0, y: 0 }
+  };
   state = {
-    dragging: false,
-  }
+    dragging: false
+  };
   componentDidUpdate = (props, state) => {
     if (this.state.dragging && !state.dragging) {
-      document.addEventListener('mousemove', this.onMouseMove)
-      document.addEventListener('mouseup', this.onMouseUp)
+      document.addEventListener("mousemove", this.onMouseMove);
+      document.addEventListener("mouseup", this.onMouseUp);
     } else if (!this.state.dragging && state.dragging) {
-      document.removeEventListener('mousemove', this.onMouseMove)
-      document.removeEventListener('mouseup', this.onMouseUp)
+      document.removeEventListener("mousemove", this.onMouseMove);
+      document.removeEventListener("mouseup", this.onMouseUp);
     }
-  }
+  };
   // calculate relative position to the mouse and set dragging=true
-  onMouseDown = (evt) => {
+  onMouseDown = evt => {
     // only left mouse button
-    if (evt.button !== 0) return
-    evt.stopPropagation()
-    evt.preventDefault()
+    if (evt.button !== 0) return;
+    evt.stopPropagation();
+    evt.preventDefault();
     this.pos = {
       x: evt.clientX,
-      y: evt.clientY,
-    }
+      y: evt.clientY
+    };
     this.setState({
-      dragging: true,
-    })
-  }
-  onMouseUp = (evt) => {
-    evt.stopPropagation()
-    evt.preventDefault()
-    this.setState({dragging: false})
-  }
-  onMouseMove = (evt) => {
-    if (!this.state.dragging) return
-    evt.stopPropagation()
-    evt.preventDefault()
+      dragging: true
+    });
+  };
+  onMouseUp = evt => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    this.setState({ dragging: false });
+  };
+  onMouseMove = evt => {
+    if (!this.state.dragging) return;
+    evt.stopPropagation();
+    evt.preventDefault();
     this.props.onUpdate({
       ...this.props,
       deltaX: this.pos.x - evt.clientX,
-      deltaY: this.pos.y - evt.clientY,
-    })
+      deltaY: this.pos.y - evt.clientY
+    });
     this.pos = {
       x: evt.clientX,
-      y: evt.clientY,
-    }
-  }
+      y: evt.clientY
+    };
+  };
   render() {
-    return (
-      React.cloneElement(
-        React.Children.only(this.props.children),
-        {onMouseDown: this.onMouseDown},
-      )
-    )
+    return React.cloneElement(React.Children.only(this.props.children), {
+      onMouseDown: this.onMouseDown
+    });
   }
 }

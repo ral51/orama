@@ -1,10 +1,9 @@
 // Copyright 2017 Kensho Technologies, LLC.
 
-const isStatelessComponentFunction = Component => (
+const isStatelessComponentFunction = Component =>
   Component &&
-  typeof Component !== 'string' &&
+  typeof Component !== "string" &&
   !(Component.prototype && Component.prototype.render) &&
-  !Component.contextTypes
-)
+  !Component.contextTypes;
 
-export default isStatelessComponentFunction
+export default isStatelessComponentFunction;

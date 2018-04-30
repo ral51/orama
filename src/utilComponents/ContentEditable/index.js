@@ -1,61 +1,63 @@
 // Copyright 2017 Kensho Technologies, LLC.
 
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
 class ContentEditable extends React.Component {
   static propTypes = {
     acceptNewLine: PropTypes.bool,
     onUpdate: PropTypes.func,
     text: PropTypes.string,
-    textEditable: PropTypes.bool,
-  }
+    textEditable: PropTypes.bool
+  };
   static defaultProps = {
     acceptNewLine: false,
     onUpdate: () => undefined,
-    textEditable: true,
-  }
+    textEditable: true
+  };
   componentDidUpdate = () => {
-    const node = this.refs.block
+    const node = this.refs.block;
     if (this.props.text !== node.innerText) {
-      node.innerText = this.props.text || ''
+      node.innerText = this.props.text || "";
     }
-  }
+  };
   handleInput = () => {
-    const newText = this.refs.block.innerText.toString().replace(/(\r\n|\n|\r)/gm, '')
+    const newText = this.refs.block.innerText
+      .toString()
+      .replace(/(\r\n|\n|\r)/gm, "");
     this.props.onUpdate({
       ...this.props,
-      text: newText,
-    })
-  }
-  handleKeyDown = (evt) => {
+      text: newText
+    });
+  };
+  handleKeyDown = evt => {
     if (evt.keyCode === 13) {
-      evt.preventDefault()
-      this.refs.block.blur()
-      window.getSelection().removeAllRanges()
+      evt.preventDefault();
+      this.refs.block.blur();
+      window.getSelection().removeAllRanges();
     }
-  }
-  handleMouseDown = (evt) => {
-    evt.stopPropagation()
-  }
+  };
+  handleMouseDown = evt => {
+    evt.stopPropagation();
+  };
   render() {
-    const {props, handleInput} = this
+    const { props, handleInput } = this;
     return (
       <div
         contentEditable={props.textEditable}
-        dangerouslySetInnerHTML={{__html: props.text}}
+        dangerouslySetInnerHTML={{ __html: props.text }}
         onBlur={handleInput}
         onInput={handleInput}
         onKeyDown={this.handleKeyDown}
         onMouseDown={this.handleMouseDown}
-        ref='block'
+        ref="block"
         style={{
-          outline: 'none',
-          cursor: 'text',
+          outline: "none",
+          cursor: "text"
         }}
       />
-    )
+    );
   }
 }
 
-export default ContentEditable
+export default ContentEditable;

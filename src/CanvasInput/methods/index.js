@@ -6,15 +6,18 @@ export const runHoverSolverOn = dataUnderMouse => {
     renderDatum,
     hoverData,
     localMouse,
-    mouse,
-  } = dataUnderMouse
+    mouse
+  } = dataUnderMouse;
 
-  if (!renderDatum || !layerProps) return dataUnderMouse
-  const hoverSolver = layerProps.hoverSolver || renderDatum.hoverSolver
-  if (!hoverSolver) return dataUnderMouse
+  if (!renderDatum || !layerProps) return dataUnderMouse;
+  const hoverSolver = layerProps.hoverSolver || renderDatum.hoverSolver;
+  if (!hoverSolver) return dataUnderMouse;
   const hoverSolverData = hoverSolver(
-    layerProps, hoverData, renderDatum, localMouse,
-  )
+    layerProps,
+    hoverData,
+    renderDatum,
+    localMouse
+  );
   return {
     layerProps,
     hoverOriginalData: hoverData,
@@ -22,19 +25,19 @@ export const runHoverSolverOn = dataUnderMouse => {
     hoverData: hoverSolverData.hoverData,
     renderDatum,
     localMouse,
-    mouse,
-  }
-}
+    mouse
+  };
+};
 
 export const getMouseFromEvt = evt => {
   if (evt.touches) {
     return {
       x: evt.touches[0].clientX,
-      y: evt.touches[0].clientY,
-    }
+      y: evt.touches[0].clientY
+    };
   }
   return {
     x: evt.clientX,
-    y: evt.clientY,
-  }
-}
+    y: evt.clientY
+  };
+};

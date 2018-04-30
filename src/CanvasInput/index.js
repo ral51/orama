@@ -1,15 +1,15 @@
 // Copyright 2017 Kensho Technologies, LLC.
 
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import {getDataUnderMouse} from '../CanvasInput/getDataUnderMouse'
-import {getMouseFromEvt} from '../CanvasInput/methods'
-import {hoverRender} from '../CanvasRender/hoverRender'
-import {runHoverSolverOn} from '../CanvasInput/methods'
-import {TooltipWrapper} from '../TooltipWrapper'
+import { getDataUnderMouse } from "../CanvasInput/getDataUnderMouse";
+import { getMouseFromEvt } from "../CanvasInput/methods";
+import { hoverRender } from "../CanvasRender/hoverRender";
+import { runHoverSolverOn } from "../CanvasInput/methods";
+import { TooltipWrapper } from "../TooltipWrapper";
 
-import {CanvasRender} from '../CanvasRender'
+import { CanvasRender } from "../CanvasRender";
 
 /*
 Usually used inside of <ChartRender/>
@@ -20,102 +20,102 @@ export class CanvasInput extends React.Component {
     onUpdate: PropTypes.func.isRequired,
     renderLayers: PropTypes.array,
     rootProps: PropTypes.object,
-    theme: PropTypes.object,
-  }
+    theme: PropTypes.object
+  };
   static defaultProps = {
-    renderLayers: [],
-  }
-  state = {}
-  componentWillReceiveProps = (props) => {
+    renderLayers: []
+  };
+  state = {};
+  componentWillReceiveProps = props => {
     if (this.state.mouse && !this.mouseLeave) {
       const solvedData = runHoverSolverOn(
         getDataUnderMouse(props, this.state.mouse, this.canvasNode)
-      )
+      );
       this.setState({
         renderDatum: solvedData.renderDatum,
         hoverRenderData: solvedData.hoverRenderData,
         hoverData: solvedData.hoverData,
         localMouse: solvedData.localMouse,
-        layerProps: solvedData.layerProps,
-      })
+        layerProps: solvedData.layerProps
+      });
     }
-  }
+  };
   componentDidUpdate = (props, state) => {
     if (this.state.mouseDrag && !state.mouseDrag) {
-      document.addEventListener('mouseup', this.handleMouseUp)
+      document.addEventListener("mouseup", this.handleMouseUp);
     } else if (!this.state.mouseDrag && state.mouseDrag) {
-      document.removeEventListener('mouseup', this.handleMouseUp)
+      document.removeEventListener("mouseup", this.handleMouseUp);
     }
-  }
-  handleCanvasRef = (canvasNode) => {
-    this.canvasNode = canvasNode
-  }
-  handleClick = (evt) => {
-    evt.stopPropagation()
-    evt.preventDefault()
+  };
+  handleCanvasRef = canvasNode => {
+    this.canvasNode = canvasNode;
+  };
+  handleClick = evt => {
+    evt.stopPropagation();
+    evt.preventDefault();
     if (!this.state.mouseDrag) {
-      const mouse = getMouseFromEvt(evt)
+      const mouse = getMouseFromEvt(evt);
       const solvedData = runHoverSolverOn(
         getDataUnderMouse(this.props, mouse, this.canvasNode)
-      )
+      );
       this.props.onUpdate({
-        action: 'mouseClick',
+        action: "mouseClick",
         mouse,
         renderDatum: solvedData.renderDatum,
         hoverRenderData: solvedData.hoverRenderData,
         hoverData: solvedData.hoverData,
         localMouse: solvedData.localMouse,
         layerProps: solvedData.layerProps,
-        rootProps: this.props.rootProps,
-      })
+        rootProps: this.props.rootProps
+      });
     }
     this.setState({
-      mouseDrag: false,
-    })
-  }
+      mouseDrag: false
+    });
+  };
   handleDoubleClick = () => {
     this.props.onUpdate({
-      action: 'mouseDoubleClick',
-    })
-  }
-  handleMouseDown = (evt) => {
-    const mouse = getMouseFromEvt(evt)
+      action: "mouseDoubleClick"
+    });
+  };
+  handleMouseDown = evt => {
+    const mouse = getMouseFromEvt(evt);
     const solvedData = runHoverSolverOn(
       getDataUnderMouse(this.props, mouse, this.canvasNode)
-    )
+    );
     this.props.onUpdate({
-      action: 'mouseDown',
+      action: "mouseDown",
       mouse,
       renderDatum: solvedData.renderDatum,
       hoverRenderData: solvedData.hoverRenderData,
       hoverData: solvedData.hoverData,
       localMouse: solvedData.localMouse,
       layerProps: solvedData.layerProps,
-      rootProps: this.props.rootProps,
-    })
+      rootProps: this.props.rootProps
+    });
     this.setState({
       mouseDown: true,
       mouse,
       hoverRenderData: solvedData.hoverRenderData,
       hoverData: solvedData.hoverData,
-      layerProps: solvedData.layerProps,
-    })
-    this.lastMouse = mouse
-  }
-  handleMouseMove = (evt) => {
-    const mouse = getMouseFromEvt(evt)
+      layerProps: solvedData.layerProps
+    });
+    this.lastMouse = mouse;
+  };
+  handleMouseMove = evt => {
+    const mouse = getMouseFromEvt(evt);
     const solvedData = runHoverSolverOn(
       getDataUnderMouse(this.props, mouse, this.canvasNode)
-    )
-    let mouseDelta
+    );
+    let mouseDelta;
     if (this.lastMouse) {
       mouseDelta = {
         x: this.lastMouse.x - mouse.x,
-        y: this.lastMouse.y - mouse.y,
-      }
+        y: this.lastMouse.y - mouse.y
+      };
     }
     this.props.onUpdate({
-      action: this.state.mouseDrag ? 'mouseDrag' : 'mouseMove',
+      action: this.state.mouseDrag ? "mouseDrag" : "mouseMove",
       mouse,
       mouseDelta,
       renderDatum: solvedData.renderDatum,
@@ -123,55 +123,55 @@ export class CanvasInput extends React.Component {
       hoverData: solvedData.hoverData,
       localMouse: solvedData.localMouse,
       layerProps: solvedData.layerProps,
-      rootProps: this.props.rootProps,
-    })
+      rootProps: this.props.rootProps
+    });
     this.setState({
       mouseDrag: this.state.mouseDown ? true : false,
       mouse,
       hoverRenderData: solvedData.hoverRenderData,
       hoverData: solvedData.hoverData,
-      layerProps: solvedData.layerProps,
-    })
-    this.lastMouse = mouse
-    this.mouseLeave = false
-  }
-  handleMouseUp = (evt) => {
-    evt.stopPropagation()
-    evt.preventDefault()
-    const mouse = getMouseFromEvt(evt)
+      layerProps: solvedData.layerProps
+    });
+    this.lastMouse = mouse;
+    this.mouseLeave = false;
+  };
+  handleMouseUp = evt => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    const mouse = getMouseFromEvt(evt);
     const solvedData = runHoverSolverOn(
       getDataUnderMouse(this.props, mouse, this.canvasNode, evt)
-    )
+    );
     this.props.onUpdate({
-      action: 'mouseUp',
+      action: "mouseUp",
       mouse,
       renderDatum: solvedData.renderDatum,
       hoverRenderData: solvedData.hoverRenderData,
       hoverData: solvedData.hoverData,
       localMouse: solvedData.localMouse,
       layerProps: solvedData.layerProps,
-      rootProps: this.props.rootProps,
-    })
+      rootProps: this.props.rootProps
+    });
     this.setState({
       mouseDrag: false,
-      mouseDown: false,
-    })
-  }
+      mouseDown: false
+    });
+  };
   handleMouseLeave = () => {
     this.props.onUpdate({
-      action: 'mouseLeave',
-    })
+      action: "mouseLeave"
+    });
     this.setState({
       mouse: undefined,
       hoverRenderData: undefined,
       hoverData: undefined,
-      layerProps: undefined,
-    })
-    this.mouseLeave = true
-  }
+      layerProps: undefined
+    });
+    this.mouseLeave = true;
+  };
   render() {
-    const {props, state} = this
-    const {rootProps} = props
+    const { props, state } = this;
+    const { rootProps } = props;
     return (
       <div>
         <CanvasRender // hoverRender
@@ -196,24 +196,24 @@ export class CanvasInput extends React.Component {
           onTouchStart={this.handleMouseDown}
           ref={this.handleCanvasRef}
           style={{
-            cursor: 'pointer',
-            display: 'block',
-            position: 'absolute',
-            userSelect: 'none',
+            cursor: "pointer",
+            display: "block",
+            position: "absolute",
+            userSelect: "none",
             width: rootProps.width,
-            height: rootProps.height,
+            height: rootProps.height
           }}
           width={rootProps.width}
         />
-        {state.mouse && state.hoverData ?
+        {state.mouse && state.hoverData ? (
           <TooltipWrapper
             hoverData={state.hoverData}
             layerProps={state.layerProps}
             mouse={state.mouse}
             theme={props.theme}
           />
-        : null}
+        ) : null}
       </div>
-    )
+    );
   }
 }

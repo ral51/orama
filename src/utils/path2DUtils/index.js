@@ -6,7 +6,6 @@
  * @namespace /utils/path
  */
 
-
 /**
  * Creates a pathMock object
  * @memberOf /utils/path
@@ -24,8 +23,8 @@ export const pathMock = () => ({
   arc() {},
   arcTo() {},
   ellipse() {},
-  rect() {},
-})
+  rect() {}
+});
 
 /**
  * According to the environments, creates a new `Path2D` object or a `pathMock`.
@@ -35,6 +34,6 @@ export const pathMock = () => ({
  * @return {Path2D | pathMock}
  */
 export const getPath2D = () => {
-  if (global.Path2D) return new Path2D()
-  return pathMock()
-}
+  if (global.Path2D) return new Path2D();
+  return pathMock();
+};

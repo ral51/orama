@@ -1,21 +1,24 @@
 // Copyright 2017 Kensho Technologies, LLC.
 
-import React from 'react'
-import isStatelessComponentFunction from '../isStatelessComponentFunction'
+import React from "react";
+import isStatelessComponentFunction from "../isStatelessComponentFunction";
 
 function isFunction(functionToCheck) {
-  const getType = {}
-  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]'
+  const getType = {};
+  return (
+    functionToCheck &&
+    getType.toString.call(functionToCheck) === "[object Function]"
+  );
 }
 export const getName = name => {
-  if (!name) return 'unknown'
-  if (name[0] === '_') return name.substring(1)
-  return name
-}
+  if (!name) return "unknown";
+  if (name[0] === "_") return name.substring(1);
+  return name;
+};
 export const getInitialState = initialState => {
-  if (isFunction(initialState)) return initialState()
-  return initialState
-}
+  if (isFunction(initialState)) return initialState();
+  return initialState;
+};
 
 /**
  * Funtion for wrapping 'stateless functional components' during development, allowing then to respond to onUpdate without changes to parent components.
@@ -51,35 +54,35 @@ export const getInitialState = initialState => {
 const stateHOC = (Child, initialState = {}) => {
   if (isStatelessComponentFunction(Child)) {
     return class stateHOC extends React.PureComponent {
-      static displayName = `${getName(Child.name)}(state)`
-      static defaultProps = Child.defaultProps
+      static displayName = `${getName(Child.name)}(state)`;
+      static defaultProps = Child.defaultProps;
       state = {
         ...getInitialState(Child.initialState),
-        ...getInitialState(initialState),
-      }
-      handleChildUpdate = (childProps) => {
-        this.setState(childProps)
-      }
+        ...getInitialState(initialState)
+      };
+      handleChildUpdate = childProps => {
+        this.setState(childProps);
+      };
       render() {
         return Child({
           ...this.props,
           ...this.state,
           onUpdate: this.props.onUpdate || this.handleChildUpdate,
-          onState: this.handleChildUpdate,
-        })
+          onState: this.handleChildUpdate
+        });
       }
-    }
+    };
   }
   return class stateHOC extends React.PureComponent {
-    static displayName = `${Child.displayName}(state)`
-    static defaultProps = {}
+    static displayName = `${Child.displayName}(state)`;
+    static defaultProps = {};
     state = {
       ...getInitialState(Child.initialState),
-      ...getInitialState(initialState),
-    }
-    handleChildUpdate = (childProps) => {
-      this.setState(childProps)
-    }
+      ...getInitialState(initialState)
+    };
+    handleChildUpdate = childProps => {
+      this.setState(childProps);
+    };
     render() {
       return (
         <Child
@@ -87,9 +90,9 @@ const stateHOC = (Child, initialState = {}) => {
           {...this.state}
           onUpdate={this.props.onUpdate || this.handleChildUpdate}
         />
-      )
+      );
     }
-  }
-}
+  };
+};
 
-export default stateHOC
+export default stateHOC;

@@ -1,8 +1,8 @@
 // Copyright 2017 Kensho Technologies, LLC.
 
-import {rectBase} from '../rectUtils'
+import { rectBase } from "../rectUtils";
 
-const noop = () => undefined
+const noop = () => undefined;
 export const ctxMock = {
   beginPath: noop,
   bezierCurveTo: noop,
@@ -15,7 +15,7 @@ export const ctxMock = {
   isPointInPath: noop,
   isPointInStroke: noop,
   lineTo: noop,
-  measureText: (text) => ({width: text.toString().length}),
+  measureText: text => ({ width: text.toString().length }),
   arcTo: noop,
   moveTo: noop,
   quadraticCurveTo: noop,
@@ -29,13 +29,13 @@ export const ctxMock = {
   transform: noop,
   translate: noop,
   stroke: noop,
-  setLineDash: noop,
-}
+  setLineDash: noop
+};
 export const canvasMock = {
   getContext: () => ctxMock,
-  getBoundingClientRect: () => ({left: 0, top: 0, width: 500, height: 500}),
-}
-let cachedCtx
+  getBoundingClientRect: () => ({ left: 0, top: 0, width: 500, height: 500 })
+};
+let cachedCtx;
 /*
 Returns a cached offscreen canvas render.
 In case the DOM is not available, returns a mocked render context.
@@ -43,38 +43,23 @@ In case the DOM is not available, returns a mocked render context.
 The context returned by this function is shared, always call `save()` and `restore()` when manipulating it
 */
 export function getCachedContext() {
-  if (cachedCtx) return cachedCtx
+  if (cachedCtx) return cachedCtx;
   if (global.document && global.document.createElement) {
-    cachedCtx = document.createElement('canvas').getContext('2d')
-    return cachedCtx
+    cachedCtx = document.createElement("canvas").getContext("2d");
+    return cachedCtx;
   }
-  return ctxMock
+  return ctxMock;
 }
 
 export function clearRect(ctx, rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  ctx.clearRect(
-    rect.x,
-    rect.y,
-    rect.width,
-    rect.height
-  )
+  var rect = { ...rectBase, ...rectInput };
+  ctx.clearRect(rect.x, rect.y, rect.width, rect.height);
 }
 export function fillRect(ctx, rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  ctx.fillRect(
-    rect.x,
-    rect.y,
-    rect.width,
-    rect.height
-  )
+  var rect = { ...rectBase, ...rectInput };
+  ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
 }
 export function strokeRect(ctx, rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  ctx.strokeRect(
-    rect.x,
-    rect.y,
-    rect.width,
-    rect.height
-  )
+  var rect = { ...rectBase, ...rectInput };
+  ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
 }

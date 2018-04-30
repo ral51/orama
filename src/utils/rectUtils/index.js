@@ -5,8 +5,8 @@
  * @namespace  /utils/rectUtils
  */
 
-export var rectBase = {x: 0, y: 0, width: 0, height: 0}
-export var marginBase = {left: 0, right: 0, top: 0, bottom: 0}
+export var rectBase = { x: 0, y: 0, width: 0, height: 0 };
+export var marginBase = { left: 0, right: 0, top: 0, bottom: 0 };
 
 /**
  * Inset a `Rect | Size` by a margin
@@ -17,14 +17,14 @@ export var marginBase = {left: 0, right: 0, top: 0, bottom: 0}
  * @return {Rect}
  */
 export function marginInset(marginInput, rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  var margin = {...marginBase, ...marginInput}
+  var rect = { ...rectBase, ...rectInput };
+  var margin = { ...marginBase, ...marginInput };
   return {
     x: rect.x + margin.left,
     y: rect.y + margin.top,
     width: rect.width - margin.left - margin.right,
-    height: rect.height - margin.top - margin.bottom,
-  }
+    height: rect.height - margin.top - margin.bottom
+  };
 }
 
 /**
@@ -38,21 +38,21 @@ export function marginInset(marginInput, rectInput) {
  * @return {Rect}
  */
 export function inset(value, rectInput) {
-  var rect = {...rectBase, ...rectInput}
+  var rect = { ...rectBase, ...rectInput };
   return {
     x: rect.x + value,
     y: rect.y + value,
     width: rect.width - value * 2,
-    height: rect.height - value * 2,
-  }
+    height: rect.height - value * 2
+  };
 }
 
 export function getMinX(rectInput) {
-  return rectInput.x
+  return rectInput.x;
 }
 
 export function getMinY(rectInput) {
-  return rectInput.y
+  return rectInput.y;
 }
 
 /**
@@ -63,8 +63,8 @@ export function getMinY(rectInput) {
  * @return {number}
  */
 export function getMaxX(rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  return rect.x + rect.width
+  var rect = { ...rectBase, ...rectInput };
+  return rect.x + rect.width;
 }
 
 /**
@@ -75,8 +75,8 @@ export function getMaxX(rectInput) {
  * @return {number}
  */
 export function getMaxY(rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  return rect.y + rect.height
+  var rect = { ...rectBase, ...rectInput };
+  return rect.y + rect.height;
 }
 
 /**
@@ -85,8 +85,8 @@ export function getMaxY(rectInput) {
  * @return {Range}
  */
 export function getRangeX(rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  return [rect.x, getMaxX(rect)]
+  var rect = { ...rectBase, ...rectInput };
+  return [rect.x, getMaxX(rect)];
 }
 
 /**
@@ -95,8 +95,8 @@ export function getRangeX(rectInput) {
  * @return {Range}
  */
 export function getRangeY(rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  return [getMaxY(rect), rect.y]
+  var rect = { ...rectBase, ...rectInput };
+  return [getMaxY(rect), rect.y];
 }
 
 /**
@@ -107,8 +107,8 @@ export function getRangeY(rectInput) {
  * @return {number}
  */
 export function getMidX(rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  return rect.x + rect.width / 2
+  var rect = { ...rectBase, ...rectInput };
+  return rect.x + rect.width / 2;
 }
 
 /**
@@ -119,15 +119,17 @@ export function getMidX(rectInput) {
  * @return {number}
  */
 export function getMidY(rectInput) {
-  var rect = {...rectBase, ...rectInput}
-  return rect.y + rect.height / 2
+  var rect = { ...rectBase, ...rectInput };
+  return rect.y + rect.height / 2;
 }
 
 export const isPointInsideRect = (point, rect) => {
-  if (point.x > rect.x &&
+  if (
+    point.x > rect.x &&
     point.x < rect.x + rect.width &&
     point.y > rect.y &&
     point.y < rect.y + rect.height
-  ) return true
-  return false
-}
+  )
+    return true;
+  return false;
+};

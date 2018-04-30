@@ -3,10 +3,10 @@
 export const windowMock = {
   innerWidth: 1000,
   innerHeight: 1000,
-  open: () => undefined,
-}
+  open: () => undefined
+};
 
 export const getWindow = () => {
-  if (global.window) return global.window
-  return windowMock
-}
+  if (global.window) return global.window;
+  return windowMock;
+};

@@ -1,37 +1,40 @@
 // Copyright 2017 Kensho Technologies, LLC.
 
-import React from 'react'
-import PropTypes from 'prop-types'
-import _ from 'lodash'
-import {DEFAULT_THEME} from '../defaultTheme'
-import {extractTooltipData} from '../Chart/extractTooltipData'
+import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
+import { DEFAULT_THEME } from "../defaultTheme";
+import { extractTooltipData } from "../Chart/extractTooltipData";
 
-const MAX_WIDTH = 320
+const MAX_WIDTH = 320;
 
-const getPadding = props => props.theme.tooltipFontSize / 2
+const getPadding = props => props.theme.tooltipFontSize / 2;
 
 const row = (props, d, i) => (
   <tr
     style={{
-      background: i % 2 ? props.theme.tooltipBackgroundFill : props.theme.tooltipEvenBackgroundFill,
+      background:
+        i % 2
+          ? props.theme.tooltipBackgroundFill
+          : props.theme.tooltipEvenBackgroundFill
     }}
     key={i}
   >
-    {props.showKeys ?
+    {props.showKeys ? (
       <td
         style={{
           borderRight: `2px solid ${props.theme.tooltipKeyBorderStroke}`,
-          padding: getPadding(props),
+          padding: getPadding(props)
         }}
       >
         {d.key}
       </td>
-    : null}
+    ) : null}
     <td // Name
       style={{
         padding: getPadding(props),
-        textAlign: 'left',
-        verticalAlign: 'top',
+        textAlign: "left",
+        verticalAlign: "top"
       }}
     >
       {d.name}
@@ -41,18 +44,18 @@ const row = (props, d, i) => (
         fontFamily: props.theme.fontFamilyMono,
         fontSize: props.theme.tooltipValueFontSize,
         padding: getPadding(props),
-        textAlign: 'right',
-        verticalAlign: 'top',
+        textAlign: "right",
+        verticalAlign: "top"
       }}
     >
       {d.value}
     </td>
   </tr>
-)
+);
 row.propTypes = {
   showKeys: PropTypes.bool,
-  theme: PropTypes.object,
-}
+  theme: PropTypes.object
+};
 
 export const TooltipInner = props => (
   <div
@@ -63,64 +66,51 @@ export const TooltipInner = props => (
       fontFamily: props.theme.fontFamily,
       fontSize: props.theme.tooltipFontSize,
       maxWidth: MAX_WIDTH,
-      opacity: 0.96,
+      opacity: 0.96
     }}
   >
-    {props.title ?
+    {props.title ? (
       <div
         style={{
           fontSize: props.theme.tooltipTitleFontSize,
           fontWeight: props.theme.tooltipTitleFontWeight,
           padding: getPadding(props),
-          textAlign: 'left',
-          verticalAlign: 'top',
+          textAlign: "left",
+          verticalAlign: "top"
         }}
       >
-      {props.title}
+        {props.title}
       </div>
-    : null}
-    <table
-      style={{width: '100%', borderCollapse: "collapse"}}
-    >
-      <tbody>
-        {_.map(
-          props.values,
-          (d, i) => row(props, d, i)
-        )}
-      </tbody>
+    ) : null}
+    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <tbody>{_.map(props.values, (d, i) => row(props, d, i))}</tbody>
     </table>
   </div>
-)
+);
 TooltipInner.propTypes = {
   mouse: PropTypes.object,
   showKeys: PropTypes.bool,
   theme: PropTypes.object,
   title: PropTypes.string,
-  values: PropTypes.array,
-}
+  values: PropTypes.array
+};
 TooltipInner.defaultProps = {
   theme: DEFAULT_THEME,
-  showKeys: false,
-}
+  showKeys: false
+};
 
 export const Tooltip = props => {
-  const tooltipData = extractTooltipData(
-    props.layerProps,
-    props.hoverData,
-  )
+  const tooltipData = extractTooltipData(props.layerProps, props.hoverData);
   return (
     <TooltipInner
       showKeys={props.layerProps.tooltipShowKeys}
       theme={props.theme}
       {...tooltipData}
     />
-  )
-}
+  );
+};
 Tooltip.propTypes = {
-  hoverData: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.object,
-  ]),
+  hoverData: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   layerProps: PropTypes.object,
-  theme: PropTypes.object,
-}
+  theme: PropTypes.object
+};
